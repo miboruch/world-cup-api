@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserModel } from 'models';
 
 import { CreateUserDto } from './dtos';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userModel: typeof UserModel) {}
+  constructor(@Inject(UserModel) private userModel: typeof UserModel) {}
 
   createUser(createUserDto: CreateUserDto) {
-    this.userModel.query().insert(createUserDto);
+    return this.userModel.query().insert(createUserDto);
   }
 }

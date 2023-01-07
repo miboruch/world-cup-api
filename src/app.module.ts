@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ObjectionModule } from '@willsoto/nestjs-objection';
 import { knexSnakeCaseMappers } from 'objection';
 
@@ -11,14 +11,24 @@ import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
+    // ConfigModule.load(resolve(__dirname, 'config', '**/!(*.d).config.{ts,js}'), {
+    //   modifyConfigName: (name) => name.replace('.config', ''),
+    // }),
+
+    ConfigModule.forRoot({ isGlobal: true, load: [] }),
     ObjectionModule.registerAsync({
-      useFactory: (configService: ConfigService) => ({
-        name: 'postgres',
-        config: {
-          ...configService.get(ConfigEnum.sql),
-          ...knexSnakeCaseMappers(),
-        },
-      }),
+      useFactory: (configService: ConfigService) => {
+        console.log('OBJECTION MODULE');
+        console.log(configService.get(ConfigEnum.sql));
+        console.log(configService);
+        return {
+          name: 'postgres',
+          config: {
+            ...configService.get(ConfigEnum.sql),
+            ...knexSnakeCaseMappers(),
+          },
+        };
+      },
       inject: [ConfigService],
     }),
     AuthModule,
