@@ -1,5 +1,5 @@
 import { Model } from 'objection';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 export class UserModel extends Model {
   static tableName = 'users';
@@ -24,5 +24,11 @@ export class UserModel extends Model {
 
   hashPassword(password: string) {
     return hash(password, 10);
+  }
+
+  comparePassword(password: string) {
+    if (!this.password) return false;
+
+    return compare(password, this.password);
   }
 }

@@ -12,6 +12,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       secretOrKey: configService.get(ConfigEnum.jwt).secret,
       passReqToCallback: true,
+      ignoreExpiration: false,
     });
+  }
+
+  async validate(payload: any) {
+    console.log('validate used');
+    return { userId: payload.sub, username: payload.username };
   }
 }

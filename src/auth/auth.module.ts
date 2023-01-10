@@ -4,11 +4,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt/jwt.strategy';
+import { LocalStrategy } from './local/local.strategy';
 import { AuthController } from './auth.controller';
 import { ConfigEnum } from 'config';
 
 @Module({
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy, LocalStrategy],
   controllers: [AuthController],
   imports: [
     PassportModule,
