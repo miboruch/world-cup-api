@@ -8,19 +8,13 @@ import { AppController } from 'app.controller';
 import { AppService } from 'app.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { configs } from 'config';
 
 @Module({
   imports: [
-    // ConfigModule.load(resolve(__dirname, 'config', '**/!(*.d).config.{ts,js}'), {
-    //   modifyConfigName: (name) => name.replace('.config', ''),
-    // }),
-
-    ConfigModule.forRoot({ isGlobal: true, load: [] }),
+    ConfigModule.forRoot({ isGlobal: true, load: configs }),
     ObjectionModule.registerAsync({
       useFactory: (configService: ConfigService) => {
-        console.log('OBJECTION MODULE');
-        console.log(configService.get(ConfigEnum.sql));
-        console.log(configService);
         return {
           name: 'postgres',
           config: {
